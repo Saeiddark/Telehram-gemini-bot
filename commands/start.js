@@ -1,12 +1,11 @@
 import { mainMenuKeyboard } from '../keyboards/mainMenu.js';
-import { escapeMd } from '../utils/formatter.js';
 
 export default async function startCommand(ctx) {
-  const name = escapeMd(ctx.from.first_name || 'there');
+  const name = ctx.from.first_name || 'کاربر';
   await ctx.reply(
-    `👋 Hello, ${name}! I'm your AI assistant powered by Gemini.\\\n` +
-    `You can ask me anything – I automatically understand your intent.\\\n` +
-    `Use the menu below or just type your request.`,
-    { parse_mode: 'MarkdownV2', reply_markup: mainMenuKeyboard() }
+    `👋 سلام ${name}! من دستیار هوش مصنوعی شما هستم که با Gemini کار می‌کنم.\n` +
+    `می‌تونی هر سوالی بپرسی – من خودم منظور تو را می‌فهمم.\n` +
+    `از منوی زیر استفاده کن یا مستقیماً درخواستت را تایپ کن.`,
+    { reply_markup: mainMenuKeyboard() }
   );
 }
