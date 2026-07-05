@@ -4,8 +4,9 @@ import { logger } from '../utils/logger.js';
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
-const textModel = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-const visionModel = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' }); // same model supports vision
+// مدل‌هایی که خودت انتخاب کردی
+const textModel = genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
+const visionModel = genAI.getGenerativeModel({ model: 'gemini-3.5-flash' }); // یا می‌تونی 'gemini-3.1-flash-lite' بذاری
 
 export async function generateTextResponse(history, userMessage) {
   try {
@@ -34,4 +35,4 @@ export async function generateVisionResponse(imageBase64, prompt, mimeType) {
     logger.error('Gemini vision error:', error.message);
     throw new Error('AI failed to analyze the image.');
   }
-                    }
+}
