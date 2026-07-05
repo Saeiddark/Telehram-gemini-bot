@@ -18,13 +18,14 @@ function getCurrentDate() {
 
 const finalSystemInstruction = `${SYSTEM_PROMPT}\n\nToday's date is ${getCurrentDate()} (Gregorian). When asked about the date, use this exact date.`;
 
+// مدل‌هایی که خودت انتخاب کردی
 const textModel = genAI.getGenerativeModel({
-  model: 'gemini-2.5-flash',  // می‌تونی به gemini-3.5-flash تغییر بدی
+  model: 'gemini-3.5-flash',          // ← این رو خواستی
   systemInstruction: finalSystemInstruction,
 });
 
 const visionModel = genAI.getGenerativeModel({
-  model: 'gemini-2.5-flash',
+  model: 'gemini-3.5-flash',          // ← اینجا هم
   systemInstruction: finalSystemInstruction,
 });
 
@@ -57,10 +58,10 @@ export async function generateVisionResponse(imageBase64, prompt, mimeType) {
   }
 }
 
-// تابع جدید برای تحلیل و پیش‌بینی (بدون تاریخچه مکالمه)
+// تابع تحلیل فوتبال – از همون مدل استفاده می‌کنه
 export async function generateCustomResponse(prompt) {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' }); // مدل رو اینجا هم عوض کن
+    const model = genAI.getGenerativeModel({ model: 'gemini-3.5-flash' }); // ← اینجا هم یکسان باشه
     const result = await model.generateContent(prompt);
     const response = result.response;
     return response.text();
