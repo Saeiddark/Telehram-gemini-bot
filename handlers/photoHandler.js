@@ -4,19 +4,17 @@ import { isRateLimited } from '../services/rateLimiter.js';
 
 export default async function photoHandler(ctx) {
   if (isRateLimited(ctx.from.id)) {
-    return ctx.reply('⏳ Please wait a moment before sending another image.');
+    return ctx.reply('⏳ لطفاً کمی صبر کن و دوباره عکس بفرست.');
   }
 
   const file = await ctx.getFile();
   const filePath = file.file_path;
   if (!filePath) {
-    return ctx.reply('❌ Could not retrieve the image. Please try again.');
+    return ctx.reply('❌ نتوانستم تصویر را دریافت کنم. دوباره تلاش کن.');
   }
 
-  // Telegram file URL
   const fileUrl = `https://api.telegram.org/file/bot${ctx.api.token}/${filePath}`;
 
-  // Download the image as base64
   let imageBase64;
   try {
     const response = await fetch(fileUrl);
@@ -24,36 +22,33 @@ export default async function photoHandler(ctx) {
     imageBase64 = Buffer.from(buffer).toString('base64');
   } catch (err) {
     logger.error('Photo download error:', err);
-    return ctx.reply('❌ Failed to download image.');
+    return ctx.reply('❌ دانلود تصویر ناموفق بود.');
   }
 
-  const caption = ctx.message.caption || 'Describe this image in detail.';
+  const caption = ctx.message.caption || 'این تصویر را با جزئیات توصیف کن.';
   const mimeType = file.mime_type || 'image/jpeg';
 
   await ctx.replyWithChatAction('typing');
 
   try {
     const visionResponse = await generateVisionResponse(imageBase64, caption, mimeType);
-    if (visionResponse.length > 4000) {
-      // split
-      const maxLen = 4000;
+    const maxLen = 4000;
+    if (visionResponse.length <= maxLen) {
+      await ctx.reply(visionResponse, {
+        reply_to_message_id: ctx.message.message_id,
+      });
+    } else {
       for (let i = 0; i < visionResponse.length; i += maxLen) {
         const chunk = visionResponse.substring(i, i + maxLen);
         await ctx.reply(chunk, {
-          parse_mode: 'MarkdownV2',
           reply_to_message_id: i === 0 ? ctx.message.message_id : undefined,
         });
       }
-    } else {
-      await ctx.reply(visionResponse, {
-        parse_mode: 'MarkdownV2',
-        reply_to_message_id: ctx.message.message_id,
-      });
     }
   } catch (error) {
     logger.error('Vision handler error:', error.message);
-    await ctx.reply('⚠️ Sorry, I couldn’t analyze this image.', {
+    await ctx.reply('⚠️ متأسفم، نتوانستم این تصویر را تحلیل کنم.', {
       reply_to_message_id: ctx.message.message_id,
     });
   }
-    }
+        }
