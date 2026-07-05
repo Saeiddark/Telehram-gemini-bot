@@ -1,23 +1,21 @@
 import { mainMenuKeyboard } from '../keyboards/mainMenu.js';
-import { escapeMd } from '../utils/formatter.js';
 
 export default async function helpCommand(ctx) {
-  const helpText = `
-*Available commands:*
-/start – Welcome message and main menu
-/help – Show this help
-/new – Start a fresh conversation
-/about – About this bot
-/settings – Configure your preferences (coming soon)
+  const helpText = `دستورات موجود:
+/start – پیام خوش‌آمد و منوی اصلی
+/help – نمایش این راهنما
+/new – شروع یک مکالمه تازه
+/about – درباره این ربات
+/settings – تنظیمات (به زودی)
 
-*You can also:*
-• Send any text – I'll answer, translate, write code, etc.
-• Send a photo – I'll analyze it with Gemini Vision.
-• Use the inline menu for quick actions.
+همچنین می‌توانید:
+• هر متنی بفرستید – پاسخ می‌دهم، ترجمه می‌کنم، کد می‌نویسم و ...
+• عکس بفرستید – با Gemini Vision تحلیل می‌کنم.
+• از منوی inline برای اقدامات سریع استفاده کنید.
 
-Built with grammY and Google Gemini.`;
+ساخته شده با grammY و Google Gemini.`;
+
   await ctx.reply(helpText, {
-    parse_mode: 'MarkdownV2',
     reply_markup: mainMenuKeyboard(),
   });
 }
