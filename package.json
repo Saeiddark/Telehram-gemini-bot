@@ -1,0 +1,19 @@
+{
+  "name": "telegram-gemini-bot",
+  "version": "1.0.0",
+  "description": "Production-ready Telegram AI assistant using grammY and Google Gemini",
+  "main": "bot.js",
+  "type": "module",
+  "scripts": {
+    "start": "node bot.js",
+    "dev": "node --watch bot.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "dotenv": "^16.4.5",
+    "grammy": "^1.28.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
